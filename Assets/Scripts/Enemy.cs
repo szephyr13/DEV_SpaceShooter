@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Attack()
     {
-        for (int i = 0; i < 5; i++)
+        while (true)
         {
             Instantiate(bulletPrefab, spawnPosition.transform.position, Quaternion.identity);
             yield return new WaitForSeconds(2f);
