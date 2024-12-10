@@ -8,7 +8,13 @@ public class Player : MonoBehaviour
     [SerializeField] private float shootingRate;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject gun;
+    [SerializeField] private GameObject shipBase;
+    [SerializeField] private Sprite base4lifes;
+    [SerializeField] private Sprite base3lifes;
+    [SerializeField] private Sprite base2lifes;
+    [SerializeField] private Sprite base1life;
     private float timer = 0.5f;
+    private float lifes = 4;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +50,35 @@ public class Player : MonoBehaviour
         {
             Instantiate(bulletPrefab, gun.transform.position, Quaternion.identity);
             timer = 0;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("EnemyBullet") || collision.gameObject.CompareTag("Enemy"))
+        {
+            lifes--;
+            Destroy(collision.gameObject);
+        }
+        if (lifes == 4)
+        {
+            shipBase.gameObject.GetComponent<SpriteRenderer>().sprite = base4lifes;
+        }
+        else if (lifes == 3)
+        {
+            shipBase.GetComponent<SpriteRenderer>().sprite = base3lifes;
+        }
+        else if (lifes == 2)
+        {
+            shipBase.GetComponent<SpriteRenderer>().sprite = base2lifes;
+        }
+        else if (lifes == 1)
+        {
+            shipBase.GetComponent<SpriteRenderer>().sprite = base1life;
+        }
+        else if (lifes == 0)
+        {
+            Destroy(gameObject);
         }
     }
 }

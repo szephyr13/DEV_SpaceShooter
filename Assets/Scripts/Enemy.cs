@@ -28,4 +28,13 @@ public class Enemy : MonoBehaviour
             yield return new WaitForSeconds(2f);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("PlayerBullet"))
+        {
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
+        }
+    }
 }

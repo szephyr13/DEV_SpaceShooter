@@ -11,6 +11,7 @@ public class Spawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         StartCoroutine(EnemySpawn());
     }
 
@@ -29,9 +30,10 @@ public class Spawner : MonoBehaviour
                 waveText.text = (i+1) + " - " + (j+1);
                 yield return new WaitForSeconds(2f);
                 waveText.text = "";
-                for (int k = 0; k < 6; k++) //enemies
+                for (int k = 0; k < 10; k++) //enemies
                 {
-                    Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+                    Vector3 randomPosition = new Vector3(transform.position.x, Random.Range(-4.57f, 4.57f), 0);
+                    Instantiate(enemyPrefab, randomPosition, Quaternion.identity);
                     yield return new WaitForSeconds(1f);
                 }
                 yield return new WaitForSeconds(2f);
