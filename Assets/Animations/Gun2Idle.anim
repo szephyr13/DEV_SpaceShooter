@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ShootingCannon
+  m_Name: Gun2Idle
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,17 +21,7 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 2066837402, guid: 073aa0c5620be482b830f98a15107869, type: 3}
-    - time: 0.05
-      value: {fileID: -2059130308, guid: 073aa0c5620be482b830f98a15107869, type: 3}
-    - time: 0.1
-      value: {fileID: -1672141899, guid: 073aa0c5620be482b830f98a15107869, type: 3}
-    - time: 0.15
-      value: {fileID: 163844748, guid: 073aa0c5620be482b830f98a15107869, type: 3}
-    - time: 0.2
-      value: {fileID: -1339380720, guid: 073aa0c5620be482b830f98a15107869, type: 3}
-    - time: 0.25
-      value: {fileID: 1757892265, guid: 073aa0c5620be482b830f98a15107869, type: 3}
+      value: {fileID: 1762927400, guid: a8846fde5e1cf47e3a1571036e001522, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -54,18 +44,13 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 2066837402, guid: 073aa0c5620be482b830f98a15107869, type: 3}
-    - {fileID: -2059130308, guid: 073aa0c5620be482b830f98a15107869, type: 3}
-    - {fileID: -1672141899, guid: 073aa0c5620be482b830f98a15107869, type: 3}
-    - {fileID: 163844748, guid: 073aa0c5620be482b830f98a15107869, type: 3}
-    - {fileID: -1339380720, guid: 073aa0c5620be482b830f98a15107869, type: 3}
-    - {fileID: 1757892265, guid: 073aa0c5620be482b830f98a15107869, type: 3}
+    - {fileID: 1762927400, guid: a8846fde5e1cf47e3a1571036e001522, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.26666668
+    m_StopTime: 0.016666668
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
