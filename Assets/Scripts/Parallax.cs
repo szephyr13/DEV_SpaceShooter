@@ -9,13 +9,13 @@ public class Parallax : MonoBehaviour
     [SerializeField] private float width;
     private Vector3 initialPosition;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         initialPosition = transform.position;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         //How much remains to reach the end of the image

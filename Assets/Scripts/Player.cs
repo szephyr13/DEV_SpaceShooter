@@ -5,57 +5,83 @@ using UnityEngine.Pool;
 
 public class Player : MonoBehaviour
 {
+    //movement and visualization
     [SerializeField] private float speed;
-    [SerializeField] private float shootingRate;
-    [SerializeField] private Shooting bulletPrefab;
-    [SerializeField] private Shooting bullet2Prefab;
-    [SerializeField] private GameObject gun0;
-    [SerializeField] private GameObject gun1;
-    [SerializeField] private GameObject[] status1SpawnPoints;
     [SerializeField] private GameObject shipBase;
     [SerializeField] private Sprite base4lifes;
     [SerializeField] private Sprite base3lifes;
     [SerializeField] private Sprite base2lifes;
     [SerializeField] private Sprite base1life;
+    private float lifes = 4;
 
+    //gun
     [SerializeField] private Animator gun0Animator;
     [SerializeField] private Animator gun1Animator;
+    [SerializeField] private GameObject gun0;
+    [SerializeField] private GameObject gun1;
+    private int playerStatus = 0;   //0 - normal; 1 - 2bullets; 
+    private GameObject currentGun;
 
+    //shooting
+    [SerializeField] private float shootingRate;
+    [SerializeField] private Shooting bulletPrefab;
+    [SerializeField] private Shooting bullet2Prefab;
+    [SerializeField] private GameObject[] status1SpawnPoints;
     private float timer = 0.2f;
-    private float lifes = 4;
     private ObjectPool<Shooting> bulletPool;
     private ObjectPool<Shooting> projectilePool;
     private Shooting currentBullet;
-    private GameObject currentGun;
-
-    private int playerStatus = 0;
-    //0 - normal; 1 - 2bullets; 
 
 
-    // Start is called before the first frame update
+
+
     void Start()
     {
+        //creating pools on start
         bulletPool = new ObjectPool<Shooting>(CreateB, null, ReleaseB, DestroyB);
         projectilePool = new ObjectPool<Shooting>(CreateB, null, ReleaseB, DestroyB);
     }
 
-    // Update is called once per frame
+
+
+
     void Update()
     {
-        if(playerStatus == 0)
+
+        //just debugging - mode alt by tab 
+        if (Input.GetKeyDown(KeyCode.Tab) && playerStatus == 0)
+        {
+            //2 spawn points
+            playerStatus = 1;
+        }
+        else if (Input.GetKeyDown(KeyCode.Tab) && playerStatus == 1)
+        {
+            //1 spawn point
+            playerStatus = 0;
+        }
+
+
+        //sets gun checking status and active gun
+        if (playerStatus == 0 && gun1.activeSelf)
         {
             gun0.SetActive(true);
             gun1.SetActive(false);
-        } else if (playerStatus == 1)
+        } else if (playerStatus == 1 && gun0.activeSelf)
         {
             gun0.SetActive(false);
             gun1.SetActive(true);
         }
+
         PlayerMovement();
         MovementLimits();
         Shoot();
     }
 
+
+
+
+
+    //movement logic - input + limits
     private void PlayerMovement()
     {
         float inputH = Input.GetAxisRaw("Horizontal");
@@ -69,6 +95,14 @@ public class Player : MonoBehaviour
         float clampedY = Mathf.Clamp(transform.position.y, -4.57f, 4.57f);
         transform.position = new Vector3(clampedX, clampedY, 0);
     }
+
+
+
+
+    //shooting logic
+    // 1. timer for shooting limit
+    // 2. animation logic for shooting and non-shooting
+    // 3. bullet spawning and storing on pool 
     private void Shoot()
     {
         timer += 1 * Time.deltaTime;
@@ -95,7 +129,7 @@ public class Player : MonoBehaviour
             timer = 0;
         }
         else
-        {
+        { //just animation
             if(playerStatus == 0 && !Input.GetKey(KeyCode.Space))
             {
                 gun0Animator.Play("IdleCannon");
@@ -103,29 +137,22 @@ public class Player : MonoBehaviour
             else if(playerStatus == 1 && !Input.GetKey(KeyCode.Space))
             {
                 gun1Animator.Play("Gun2Idle");
-                //gun1.GetComponent<SpriteRenderer>.sprite = gun1.GetComponent
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Tab) && playerStatus == 0)
-        {
-            //2 spawn points
-            playerStatus = 1;
-        }
-        else if (Input.GetKeyDown(KeyCode.Tab) && playerStatus == 1)
-        {
-            //1 spawn point
-            playerStatus = 0;
         }
     }
 
+
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //trigger logic: life susbtraction + enemy destroying
         if (collision.gameObject.CompareTag("EnemyBullet") || collision.gameObject.CompareTag("Enemy"))
         {
             lifes--;
             Destroy(collision.gameObject);
         }
+
+        //life animation (on ship + on ui)
         if (lifes == 4)
         {
             shipBase.gameObject.GetComponent<SpriteRenderer>().sprite = base4lifes;
@@ -148,7 +175,8 @@ public class Player : MonoBehaviour
         }
     }
 
-    //BULLET POOL
+    //POOL LOGIC - creates bullet on position and stores on pool - destroys bullet - releases bullet
+    // !! if structure thinking on which gun is being used
     private Shooting CreateB()
     {
         if (playerStatus == 0)

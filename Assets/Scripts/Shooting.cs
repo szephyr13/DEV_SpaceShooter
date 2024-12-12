@@ -5,18 +5,16 @@ using UnityEngine.Pool;
 
 public class Shooting : MonoBehaviour
 {
+    //movement
     [SerializeField] private float speed;
     [SerializeField] private Vector3 direction;
 
+    //pool
     private ObjectPool<Shooting> myPool;
     public ObjectPool<Shooting> MyPool { get => myPool; set => myPool = value; }
 
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
-    // Update is called once per frame
+    //set movement, release logic
     void Update()
     {
         transform.Translate(direction * speed * Time.deltaTime);

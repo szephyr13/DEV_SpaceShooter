@@ -1130,8 +1130,8 @@ Transform:
   m_GameObject: {fileID: 761687904}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.342, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.027, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1763338361}
@@ -1974,14 +1974,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
-  shootingRate: 0.2
-  bulletPrefab: {fileID: 4289413785223115682, guid: 7fd75167b60b94f59886f77a92550b2f, type: 3}
-  bullet2Prefab: {fileID: 2938706262996005093, guid: 559f155432ea741dbab006c690981a44, type: 3}
-  gun0: {fileID: 761687904}
-  gun1: {fileID: 2072659714}
-  status1SpawnPoints:
-  - {fileID: 1270570927}
-  - {fileID: 381855451}
   shipBase: {fileID: 907522126}
   base4lifes: {fileID: 21300000, guid: a61fcd57ad81d45459a4f5fff01f251c, type: 3}
   base3lifes: {fileID: 21300000, guid: b4d106088a60f423d9c9dfe93086034c, type: 3}
@@ -1989,6 +1981,14 @@ MonoBehaviour:
   base1life: {fileID: 21300000, guid: 954444d92b70a46689b6b334b18ca46e, type: 3}
   gun0Animator: {fileID: 761687906}
   gun1Animator: {fileID: 2072659716}
+  gun0: {fileID: 761687904}
+  gun1: {fileID: 2072659714}
+  shootingRate: 0.2
+  bulletPrefab: {fileID: 4289413785223115682, guid: 7fd75167b60b94f59886f77a92550b2f, type: 3}
+  bullet2Prefab: {fileID: 2938706262996005093, guid: 559f155432ea741dbab006c690981a44, type: 3}
+  status1SpawnPoints:
+  - {fileID: 1270570927}
+  - {fileID: 381855451}
 --- !u!4 &1763338361
 Transform:
   m_ObjectHideFlags: 0
