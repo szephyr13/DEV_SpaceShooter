@@ -1,5 +1,5 @@
 <ListOfTaskListEntry>
-  <TaskListEntry file="" description="Enemy pool" priority="High" />
+  <TaskListEntry file="" description="Enemy pool" priority="High" completed="True" />
   <TaskListEntry file="" description="Enemy bullets pool" priority="High" completed="True" />
   <TaskListEntry file="" description="Main menu" />
   <TaskListEntry file="" description="Pause menu" />
@@ -14,5 +14,5 @@
   <TaskListEntry file="" description="Game over screen" priority="High" />
   <TaskListEntry file="" description="You won screen" priority="High" />
   <TaskListEntry file="" description="Code comments" priority="High" completed="True" />
-  <TaskListEntry file="" description="enemy death animation" priority="High" />
+  <TaskListEntry file="" description="enemy death animation" priority="High" completed="True" />
 </ListOfTaskListEntry>

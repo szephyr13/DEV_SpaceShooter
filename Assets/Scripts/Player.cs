@@ -32,6 +32,9 @@ public class Player : MonoBehaviour
     private ObjectPool<Shooting> projectilePool;
     private Shooting currentBullet;
 
+    //enemy spawning optimization
+    [SerializeField] private GameObject spawner;
+
 
 
 
@@ -51,13 +54,11 @@ public class Player : MonoBehaviour
         //just debugging - mode alt by tab 
         if (Input.GetKeyDown(KeyCode.Tab) && playerStatus == 0)
         {
-            //2 spawn points
-            playerStatus = 1;
+            playerStatus = 1;  //2 spawn points
         }
         else if (Input.GetKeyDown(KeyCode.Tab) && playerStatus == 1)
         {
-            //1 spawn point
-            playerStatus = 0;
+            playerStatus = 0; //1 spawn point
         }
 
 
@@ -145,17 +146,21 @@ public class Player : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //trigger logic: life susbtraction + enemy destroying
-        if (collision.gameObject.CompareTag("EnemyBullet") || collision.gameObject.CompareTag("Enemy"))
+        //trigger logic: life susbtraction + enemy animation
+        if (collision.gameObject.CompareTag("EnemyBullet"))
         {
             lifes--;
-            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("Enemy"))
+        {
+            lifes--;
+            StartCoroutine(deathAnimation(collision.gameObject));
         }
 
         //life animation (on ship + on ui)
-        if (lifes == 4)
+        if (lifes >= 4)
         {
-            shipBase.gameObject.GetComponent<SpriteRenderer>().sprite = base4lifes;
+            shipBase.GetComponent<SpriteRenderer>().sprite = base4lifes;
         }
         else if (lifes == 3)
         {
@@ -173,6 +178,16 @@ public class Player : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+
+    //enemy death animation
+    IEnumerator deathAnimation (GameObject collision)
+    {
+        Animator animator = collision.transform.GetChild(0).GetComponent<Animator>();
+        animator.Play("EnemyFighterDestruction");
+        yield return new WaitForSeconds(0.5f);
+        spawner.GetComponent<Spawner>().ReleaseE(collision.gameObject.GetComponent<Enemy>());
     }
 
     //POOL LOGIC - creates bullet on position and stores on pool - destroys bullet - releases bullet

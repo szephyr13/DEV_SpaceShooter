@@ -11,8 +11,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Shooting bulletPrefab;
     [SerializeField] private GameObject spawnPosition;
 
-    //pool
+    //bullet pool
     private ObjectPool<Shooting> bulletPool;
+    //enemy pool info
+    private ObjectPool<Enemy> myPool;
+    public ObjectPool<Enemy> MyPool { get => myPool; set => myPool = value; }
+
 
 
     // creates pool, calls shooting coroutine
@@ -24,10 +28,15 @@ public class Enemy : MonoBehaviour
 
 
 
-    //updating enemy position
+    //updating enemy position, pool info
     void Update()
     {
         transform.Translate(new Vector3(-1, 0, 0) * speed * Time.deltaTime);
+
+        if (this.gameObject.transform.position.x <= -10f)
+        {
+            MyPool.Release(this);
+        }
     }
 
 
@@ -47,14 +56,26 @@ public class Enemy : MonoBehaviour
     }
 
 
-    //triggering with bullets - destroys bullet 
+    //triggering with bullets - shows death animation - destroys bullet
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("PlayerBullet"))
         {
+            StartCoroutine(deathAnimation());
             Destroy(collision.gameObject);
-            Destroy(gameObject);
         }
+    }
+
+
+    //enemy death animation
+    IEnumerator deathAnimation()
+    {
+        Animator animator = this.transform.GetChild(0).GetComponent<Animator>();
+        animator.Play("EnemyFighterDestruction");
+
+        yield return new WaitForSeconds(0.5f);
+
+        this.gameObject.GetComponentInParent<Spawner>().ReleaseE(GetComponent<Enemy>());
     }
 
 

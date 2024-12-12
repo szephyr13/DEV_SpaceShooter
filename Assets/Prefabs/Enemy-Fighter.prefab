@@ -124,6 +124,7 @@ MonoBehaviour:
   speed: 5
   bulletPrefab: {fileID: 1043792448832708135, guid: 537db066638364cdcb02ad9736510b89, type: 3}
   spawnPosition: {fileID: 1760731958823129033}
+  spawner: {fileID: 1760731958823129033}
 --- !u!1 &1760731958823129033
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,7 +355,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7702329617439593911}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: dd898b7ff35d14d178fa45ebf431014f, type: 2}
   m_CullingMode: 0
