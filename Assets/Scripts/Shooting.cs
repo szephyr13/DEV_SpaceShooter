@@ -19,7 +19,7 @@ public class Shooting : MonoBehaviour
     {
         transform.Translate(direction * speed * Time.deltaTime);
 
-        if (this.gameObject.transform.position.x >= 10f)
+        if (this.gameObject.transform.position.x >= 10f || this.gameObject.transform.position.x <= -10f)
         {
             MyPool.Release(this);
         }

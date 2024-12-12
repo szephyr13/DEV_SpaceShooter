@@ -9,13 +9,9 @@ public class Enemy : MonoBehaviour
     //movement and shooting
     [SerializeField] private float speed;
     [SerializeField] private Shooting bulletPrefab;
-    [SerializeField] private GameObject spawnPosition;
 
     //bullet pool
     private ObjectPool<Shooting> bulletPool;
-    //enemy pool info
-    private ObjectPool<Enemy> myPool;
-    public ObjectPool<Enemy> MyPool { get => myPool; set => myPool = value; }
 
 
 
@@ -33,9 +29,9 @@ public class Enemy : MonoBehaviour
     {
         transform.Translate(new Vector3(-1, 0, 0) * speed * Time.deltaTime);
 
-        if (this.gameObject.transform.position.x <= -10f)
+        if (this.gameObject.transform.position.x <= -11f)
         {
-            MyPool.Release(this);
+            Destroy(this.gameObject);
         }
     }
 
@@ -48,7 +44,7 @@ public class Enemy : MonoBehaviour
         {
             //take from pool, reubicate, activate bullet
             Shooting bulletCopy = bulletPool.Get();
-            bulletCopy.transform.position = spawnPosition.transform.position;
+            bulletCopy.transform.position = this.gameObject.transform.position;
             bulletCopy.gameObject.SetActive(true);
 
             yield return new WaitForSeconds(0.8f);
@@ -75,14 +71,14 @@ public class Enemy : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        this.gameObject.GetComponentInParent<Spawner>().ReleaseE(GetComponent<Enemy>());
+        Destroy(this.gameObject);
     }
 
 
     //POOL LOGIC - creates bullet on position and stores on pool - destroys bullet - releases bullet
     private Shooting CreateB()
     {
-        Shooting bulletCopy = Instantiate(bulletPrefab, spawnPosition.transform.position, Quaternion.identity);
+        Shooting bulletCopy = Instantiate(bulletPrefab, this.gameObject.transform.position, Quaternion.identity);
         bulletCopy.MyPool = bulletPool;
         return bulletCopy;
     }

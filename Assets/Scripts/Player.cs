@@ -32,14 +32,17 @@ public class Player : MonoBehaviour
     private ObjectPool<Shooting> projectilePool;
     private Shooting currentBullet;
 
-    //enemy spawning optimization
-    [SerializeField] private GameObject spawner;
+
+    //game over screen
+    [SerializeField] private GameObject gameOverScreen;
 
 
 
 
     void Start()
     {
+        //restoring time if paused
+        Time.timeScale = 1f;
         //creating pools on start
         bulletPool = new ObjectPool<Shooting>(CreateB, null, ReleaseB, DestroyB);
         projectilePool = new ObjectPool<Shooting>(CreateB, null, ReleaseB, DestroyB);
@@ -115,6 +118,7 @@ public class Player : MonoBehaviour
                 Shooting bulletCopy = bulletPool.Get();
                 bulletCopy.transform.position = gun0.transform.position;
                 bulletCopy.gameObject.SetActive(true);
+                AudioManager.instance.PlaySFX("PlayerBullet");
             }
             else if (playerStatus == 1)
             {
@@ -126,6 +130,7 @@ public class Player : MonoBehaviour
                     bulletCopy.gameObject.SetActive(true);
                     bulletCopy.transform.position = status1SpawnPoints[i].transform.position;
                 }
+                AudioManager.instance.PlaySFX("EnemyBullet");
             }
             timer = 0;
         }
@@ -150,10 +155,13 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("EnemyBullet"))
         {
             lifes--;
+            AudioManager.instance.PlaySFX("EnemyBullet");
+            Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("Enemy"))
         {
             lifes--;
+            AudioManager.instance.PlaySFX("EnemyExplosion");
             StartCoroutine(deathAnimation(collision.gameObject));
         }
 
@@ -176,7 +184,8 @@ public class Player : MonoBehaviour
         }
         else if (lifes == 0)
         {
-            Destroy(gameObject);
+            gameOverScreen.SetActive(true);
+            Time.timeScale = 0f;
         }
     }
 
@@ -187,7 +196,7 @@ public class Player : MonoBehaviour
         Animator animator = collision.transform.GetChild(0).GetComponent<Animator>();
         animator.Play("EnemyFighterDestruction");
         yield return new WaitForSeconds(0.5f);
-        spawner.GetComponent<Spawner>().ReleaseE(collision.gameObject.GetComponent<Enemy>());
+        Destroy(collision.gameObject);
     }
 
     //POOL LOGIC - creates bullet on position and stores on pool - destroys bullet - releases bullet
