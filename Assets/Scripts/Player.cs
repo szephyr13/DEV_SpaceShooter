@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -12,7 +13,11 @@ public class Player : MonoBehaviour
     [SerializeField] private Sprite base3lifes;
     [SerializeField] private Sprite base2lifes;
     [SerializeField] private Sprite base1life;
-    private float lifes = 4;
+    private int lifes = 4;
+    public int score = 0;
+    //ui
+    [SerializeField] private GameObject[] lifesUI;
+    [SerializeField] private TextMeshProUGUI scoreText;
 
     //gun
     [SerializeField] private Animator gun0Animator;
@@ -35,17 +40,20 @@ public class Player : MonoBehaviour
 
     //game over screen
     [SerializeField] private GameObject gameOverScreen;
+    [SerializeField] private GameObject pauseMenu;
 
 
-
+    
 
     void Start()
     {
-        //restoring time if paused
-        Time.timeScale = 1f;
+        //pause time for mainMenu
+        Time.timeScale = 0f;
         //creating pools on start
         bulletPool = new ObjectPool<Shooting>(CreateB, null, ReleaseB, DestroyB);
         projectilePool = new ObjectPool<Shooting>(CreateB, null, ReleaseB, DestroyB);
+        //draws lifes
+        UpdateLifes();
     }
 
 
@@ -76,12 +84,46 @@ public class Player : MonoBehaviour
             gun1.SetActive(true);
         }
 
+
+        //pause menu
+        if (Input.GetKeyDown(KeyCode.Escape) && pauseMenu.activeSelf == false)
+        {
+            AudioManager.instance.PlaySFX("UISelect");
+            Time.timeScale = 0f;
+            pauseMenu.SetActive(true);
+        } else if (Input.GetKeyDown(KeyCode.Escape) && pauseMenu.activeSelf == true)
+        {
+            AudioManager.instance.PlaySFX("UISelect");
+            Time.timeScale = 1f;
+            pauseMenu.SetActive(false);
+        }
+
         PlayerMovement();
         MovementLimits();
         Shoot();
+        scoreText.text = "Score: " + score;
     }
 
 
+
+    private void UpdateLifes()
+    {
+        //adds up lifes
+        for (int i = 0; i <= lifes; i++)
+        {
+            if(lifesUI[i].activeSelf == false)
+            {
+                lifesUI[i].SetActive(true);
+            }
+        }
+
+        //deletes lifes
+        if (lifesUI[lifes].activeSelf == true)
+        {
+            lifesUI[lifes].SetActive(false);
+        }
+
+    }
 
 
 
@@ -161,6 +203,7 @@ public class Player : MonoBehaviour
         else if (collision.gameObject.CompareTag("Enemy"))
         {
             lifes--;
+            score += 15;
             AudioManager.instance.PlaySFX("EnemyExplosion");
             StartCoroutine(deathAnimation(collision.gameObject));
         }
@@ -169,22 +212,29 @@ public class Player : MonoBehaviour
         if (lifes >= 4)
         {
             shipBase.GetComponent<SpriteRenderer>().sprite = base4lifes;
+            UpdateLifes();
         }
         else if (lifes == 3)
         {
             shipBase.GetComponent<SpriteRenderer>().sprite = base3lifes;
+            UpdateLifes();
+            
         }
         else if (lifes == 2)
         {
             shipBase.GetComponent<SpriteRenderer>().sprite = base2lifes;
+            UpdateLifes();
         }
         else if (lifes == 1)
         {
             shipBase.GetComponent<SpriteRenderer>().sprite = base1life;
+            UpdateLifes();
         }
         else if (lifes == 0)
         {
+            AudioManager.instance.PlaySFX("YouLose");
             gameOverScreen.SetActive(true);
+            UpdateLifes();
             Time.timeScale = 0f;
         }
     }

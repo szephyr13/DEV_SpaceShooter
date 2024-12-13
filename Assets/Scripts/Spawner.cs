@@ -27,7 +27,9 @@ public class Spawner : MonoBehaviour
     {
         if (wavesAreOver)
         {
+            AudioManager.instance.PlaySFX("YouWon");
             youWon.SetActive(true);
+            this.gameObject.SetActive(false);
             Time.timeScale = 0f;
         }
     }

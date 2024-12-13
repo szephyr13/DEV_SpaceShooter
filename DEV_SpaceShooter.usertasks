@@ -1,15 +1,15 @@
 <ListOfTaskListEntry>
   <TaskListEntry file="" description="Enemy pool" priority="High" completed="True" />
   <TaskListEntry file="" description="Enemy bullets pool" priority="High" completed="True" />
-  <TaskListEntry file="" description="Main menu" />
-  <TaskListEntry file="" description="Pause menu" />
-  <TaskListEntry file="" description="Options menu" />
+  <TaskListEntry file="" description="Main menu" completed="True" />
+  <TaskListEntry file="" description="Pause menu" completed="True" />
+  <TaskListEntry file="" description="Options menu" completed="True" />
   <TaskListEntry file="" description="BGM" completed="True" />
   <TaskListEntry file="" description="SFX" completed="True" />
   <TaskListEntry file="" description="Power up 1 (2 bullets)" priority="Low" />
   <TaskListEntry file="" description="Power up 2 (extra life)" priority="Low" />
   <TaskListEntry file="" description="Power up 3 (barrier)" priority="Low" />
-  <TaskListEntry file="" description="UI" priority="High" />
+  <TaskListEntry file="" description="UI" priority="High" completed="True" />
   <TaskListEntry file="" description="Final enemy" priority="Low" />
   <TaskListEntry file="" description="Game over screen" priority="High" completed="True" />
   <TaskListEntry file="" description="You won screen" priority="High" completed="True" />

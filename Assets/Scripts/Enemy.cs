@@ -9,15 +9,16 @@ public class Enemy : MonoBehaviour
     //movement and shooting
     [SerializeField] private float speed;
     [SerializeField] private Shooting bulletPrefab;
-
+    private GameObject player;
     //bullet pool
     private ObjectPool<Shooting> bulletPool;
 
 
 
-    // creates pool, calls shooting coroutine
+    // finds player, creates pool, calls shooting coroutine
     void Start()
     {
+        player = GameObject.Find("Player");
         bulletPool = new ObjectPool<Shooting>(CreateB, null, ReleaseB, DestroyB);
         StartCoroutine(Attack());
     }
@@ -57,6 +58,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("PlayerBullet"))
         {
+            player.gameObject.GetComponent<Player>().score += 20;
             StartCoroutine(deathAnimation());
             Destroy(collision.gameObject);
         }
