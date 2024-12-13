@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Sprite base3lifes;
     [SerializeField] private Sprite base2lifes;
     [SerializeField] private Sprite base1life;
-    private int lifes = 4;
+    public int lifes = 4;
     public int score = 0;
     //ui
     [SerializeField] private GameObject[] lifesUI;
@@ -26,6 +26,10 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject gun1;
     private int playerStatus = 0;   //0 - normal; 1 - 2bullets; 
     private GameObject currentGun;
+
+    //powerups
+    private bool poweredUp;
+    [SerializeField] private TextMeshProUGUI textPowered;
 
     //shooting
     [SerializeField] private float shootingRate;
@@ -41,6 +45,9 @@ public class Player : MonoBehaviour
     //game over screen
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject youWon;
+    public bool battleWon;
+    public bool screenInvoked;
 
 
     
@@ -49,6 +56,9 @@ public class Player : MonoBehaviour
     {
         //pause time for mainMenu
         Time.timeScale = 0f;
+        //bool for win screen;
+        screenInvoked = false;
+        poweredUp = false;
         //creating pools on start
         bulletPool = new ObjectPool<Shooting>(CreateB, null, ReleaseB, DestroyB);
         projectilePool = new ObjectPool<Shooting>(CreateB, null, ReleaseB, DestroyB);
@@ -62,14 +72,12 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        //just debugging - mode alt by tab 
-        if (Input.GetKeyDown(KeyCode.Tab) && playerStatus == 0)
+        //powerups
+        if (score >= 1000 && !poweredUp)
         {
-            playerStatus = 1;  //2 spawn points
-        }
-        else if (Input.GetKeyDown(KeyCode.Tab) && playerStatus == 1)
-        {
-            playerStatus = 0; //1 spawn point
+            AudioManager.instance.PlaySFX("PowerUp");
+            playerStatus = 1;
+            poweredUp = true;
         }
 
 
@@ -102,8 +110,16 @@ public class Player : MonoBehaviour
         MovementLimits();
         Shoot();
         scoreText.text = "Score: " + score;
-    }
 
+        //You Won Screen
+        if (battleWon && !screenInvoked)
+        {
+            AudioManager.instance.PlaySFX("YouWon");
+            youWon.SetActive(true);
+            screenInvoked = true;
+            Time.timeScale = 0f;
+        }
+    }
 
 
     private void UpdateLifes()
@@ -125,6 +141,39 @@ public class Player : MonoBehaviour
 
     }
 
+    public void UpdatePlayer()
+    {
+        //life animation (on ship + on ui)
+        if (lifes >= 4)
+        {
+            shipBase.GetComponent<SpriteRenderer>().sprite = base4lifes;
+            UpdateLifes();
+        }
+        else if (lifes == 3)
+        {
+            shipBase.GetComponent<SpriteRenderer>().sprite = base3lifes;
+            UpdateLifes();
+
+        }
+        else if (lifes == 2)
+        {
+            shipBase.GetComponent<SpriteRenderer>().sprite = base2lifes;
+            UpdateLifes();
+        }
+        else if (lifes == 1)
+        {
+            shipBase.GetComponent<SpriteRenderer>().sprite = base1life;
+            UpdateLifes();
+        }
+        else if (lifes == 0)
+        {
+            AudioManager.instance.StopMusic();
+            AudioManager.instance.PlaySFX("YouLose");
+            gameOverScreen.SetActive(true);
+            UpdateLifes();
+            Time.timeScale = 0f;
+        }
+    }
 
 
     //movement logic - input + limits
@@ -197,7 +246,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("EnemyBullet"))
         {
             lifes--;
-            AudioManager.instance.PlaySFX("EnemyBullet");
+            AudioManager.instance.PlaySFX("BossBullet");
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("Enemy"))
@@ -205,43 +254,14 @@ public class Player : MonoBehaviour
             lifes--;
             score += 15;
             AudioManager.instance.PlaySFX("EnemyExplosion");
-            StartCoroutine(deathAnimation(collision.gameObject));
+            StartCoroutine(DeathAnimation(collision.gameObject));
         }
-
-        //life animation (on ship + on ui)
-        if (lifes >= 4)
-        {
-            shipBase.GetComponent<SpriteRenderer>().sprite = base4lifes;
-            UpdateLifes();
-        }
-        else if (lifes == 3)
-        {
-            shipBase.GetComponent<SpriteRenderer>().sprite = base3lifes;
-            UpdateLifes();
-            
-        }
-        else if (lifes == 2)
-        {
-            shipBase.GetComponent<SpriteRenderer>().sprite = base2lifes;
-            UpdateLifes();
-        }
-        else if (lifes == 1)
-        {
-            shipBase.GetComponent<SpriteRenderer>().sprite = base1life;
-            UpdateLifes();
-        }
-        else if (lifes == 0)
-        {
-            AudioManager.instance.PlaySFX("YouLose");
-            gameOverScreen.SetActive(true);
-            UpdateLifes();
-            Time.timeScale = 0f;
-        }
+        UpdatePlayer();
     }
 
 
     //enemy death animation
-    IEnumerator deathAnimation (GameObject collision)
+    IEnumerator DeathAnimation (GameObject collision)
     {
         Animator animator = collision.transform.GetChild(0).GetComponent<Animator>();
         animator.Play("EnemyFighterDestruction");

@@ -4117,10 +4117,10 @@ RectTransform:
   m_Children:
   - {fileID: 1162207325}
   - {fileID: 1122162005}
-  - {fileID: 468989151}
   - {fileID: 1181363981}
   - {fileID: 1364969207}
   - {fileID: 1294241225}
+  - {fileID: 468989151}
   - {fileID: 846166126}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8001,8 +8001,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 5444379251300134012, guid: d2e2dc34a7aa64e2fba1c861e93e0b5a, type: 3}
+  bossPrefab: {fileID: 3585536809559269442, guid: 1c65b12d8490049fd94ff3eee008b2f0, type: 3}
   waveText: {fileID: 1162207326}
-  youWon: {fileID: 1364969206}
+  player: {fileID: 1763338359}
 --- !u!4 &1758772190
 Transform:
   m_ObjectHideFlags: 0
@@ -8090,6 +8091,7 @@ MonoBehaviour:
   base3lifes: {fileID: 21300000, guid: b4d106088a60f423d9c9dfe93086034c, type: 3}
   base2lifes: {fileID: 21300000, guid: 5602ca8ae0cfe490485d873e568a153b, type: 3}
   base1life: {fileID: 21300000, guid: 954444d92b70a46689b6b334b18ca46e, type: 3}
+  lifes: 4
   score: 0
   lifesUI:
   - {fileID: 994898531}
@@ -8102,6 +8104,7 @@ MonoBehaviour:
   gun1Animator: {fileID: 2072659716}
   gun0: {fileID: 761687904}
   gun1: {fileID: 2072659714}
+  textPowered: {fileID: 0}
   shootingRate: 0.2
   bulletPrefab: {fileID: 4289413785223115682, guid: 7fd75167b60b94f59886f77a92550b2f, type: 3}
   bullet2Prefab: {fileID: 2938706262996005093, guid: 559f155432ea741dbab006c690981a44, type: 3}
@@ -8110,6 +8113,9 @@ MonoBehaviour:
   - {fileID: 381855451}
   gameOverScreen: {fileID: 1181363980}
   pauseMenu: {fileID: 846166125}
+  youWon: {fileID: 1364969206}
+  battleWon: 0
+  screenInvoked: 0
 --- !u!4 &1763338361
 Transform:
   m_ObjectHideFlags: 0

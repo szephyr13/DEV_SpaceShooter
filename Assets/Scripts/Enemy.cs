@@ -58,15 +58,16 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("PlayerBullet"))
         {
+            AudioManager.instance.PlaySFX("EnemyExplosion");
             player.gameObject.GetComponent<Player>().score += 20;
-            StartCoroutine(deathAnimation());
+            StartCoroutine(DeathAnimation());
             Destroy(collision.gameObject);
         }
     }
 
 
     //enemy death animation
-    IEnumerator deathAnimation()
+    IEnumerator DeathAnimation()
     {
         Animator animator = this.transform.GetChild(0).GetComponent<Animator>();
         animator.Play("EnemyFighterDestruction");
